@@ -1,32 +1,22 @@
-"""
------------------------------------------------------------------------
-File: main.py
-Creation Time: Nov 24th 2023 7:04 pm
-Author: Saurabh Zinjad
-Developer Email: zinjadsaurabh1997@gmail.com
-Copyright (c) 2023 Saurabh Zinjad. All rights reserved | GitHub: Ztrimus
------------------------------------------------------------------------
-"""
-
 import argparse
 from zlm import AutoApplyModel
 
-
 def create_resume_cv(url, master_data, api_key, provider, model, downloads_dir):
-    """
-    Creates a resume or CV using the Job-LLM model.
+    # Check for None values and set defaults
+    url = url or "https://www.linkedin.com/jobs/view/4170745393"
+    master_data = master_data or "/home/boson-264/Downloads/Ganesh.pdf"
+    api_key = "AIzaSyB2SSQ_Wy3b1wS3VdRxknwvxKW-ROaIKy4"
+    provider = provider or "Gemini"
+    model = model or "gemini-2.0-flash"
+    downloads_dir = downloads_dir or "/home/boson-264/Downloads/"
 
-    Args:
-        url (str): The URL of the job posting or description.
-        master_data (dict): The master data containing information about the candidate.
-        api_key (str): The API key for OpenAI.
-        provider (str): The LLM provider to use. Currently, only "OpenAI, Gemini" is supported.
-        model (str): The LLM model to use.
-        downloads_dir (str): The directory where the generated resume or CV will be saved.
+    print(f"url: {url}")
+    print(f"master_data: {master_data}")
+    print(f"api_key: {api_key}")
+    print(f"provider: {provider}")
+    print(f"model: {model}")
+    print(f"downloads_dir: {downloads_dir}")
 
-    Returns:
-        None
-    """
     job_llm = AutoApplyModel(api_key, provider, model, downloads_dir)
     job_llm.resume_cv_pipeline(url, master_data)
 
@@ -36,7 +26,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     # Add the required arguments
-
     parser.add_argument("-u", "--url", help="URL of the job posting")
     parser.add_argument("-m", "--master_data", help="Path of user's master data file.")
     parser.add_argument("-k", "--api_key", default="os", help="LLM Provider API Keys")

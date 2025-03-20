@@ -20,7 +20,7 @@ from langchain_core.output_parsers import JsonOutputParser
 from zlm.schemas.sections_schemas import ResumeSchema
 from zlm.utils import utils
 from zlm.utils.latex_ops import latex_to_pdf
-from zlm.utils.llm_models import ChatGPT, Gemini, OllamaModel
+from zlm.utils.llm_models import ChatGPT, Gemini, OllamaModel, OpenAI
 from zlm.utils.data_extraction import read_data_from_url, extract_text
 from zlm.utils.metrics import jaccard_similarity, overlap_coefficient, cosine_similarity, vector_embedding_similarity
 from zlm.prompts.resume_prompt import CV_GENERATOR, RESUME_WRITER_PERSONA, JOB_DETAILS_EXTRACTOR, RESUME_DETAILS_EXTRACTOR
@@ -78,6 +78,8 @@ class AutoApplyModel:
             return Gemini(api_key=self.api_key, model=self.model, system_prompt=self.system_prompt)
         elif self.provider == "Ollama":
             return OllamaModel(model=self.model, system_prompt=self.system_prompt)
+        elif self.provider == "openai":
+            return OpenAI(api_key=self.api_key)
         else:
             raise Exception("Invalid LLM Provider")
 
@@ -238,11 +240,13 @@ class AutoApplyModel:
         Raises:
             FileNotFoundError: If the system prompt files are not found.
         """
+        resume_path = None  # Initialize the variable to avoid reference error
+        resume_details = {}  # Initialize an empty dictionary to avoid issues
         try:
             print("\nGenerating Resume Details...")
             if is_st: st.toast("Generating Resume Details...")
 
-            resume_details = dict()
+            
 
             # Personal Information Section
             if is_st: st.toast("Processing Resume's Personal Info Section...")
@@ -250,8 +254,8 @@ class AutoApplyModel:
                 "name": user_data["name"], 
                 "phone": user_data["phone"], 
                 "email": user_data["email"],
-                "github": user_data["media"]["github"], 
-                "linkedin": user_data["media"]["linkedin"]
+                "github": user_data["github"], 
+                "linkedin": user_data["linkedin"]
                 }
             st.markdown("**Personal Info Section**")
             st.write(resume_details)
