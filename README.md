@@ -22,9 +22,8 @@ All other known bugs, fixes, feedbacks, and feature requests can be reported on 
 
 #### Author & Contributor List
 
- - [Saurabh Zinjad](https://linkedin.com/in/saurabhzinjad) | [Ztrimus](https://github.com/Ztrimus) | szinjad@asu.edu
- - [Amey Bhilegaonkar](https://www.linkedin.com/in/amey-bhilegaonkar) | [ameygoes](https://github.com/ameygoes) | abhilega@asu.edu
- - [Amrita Bhattacharjee](https://www.linkedin.com/in/amritabh) | [Amritabh](https://github.com/Amritabh) | abhatt43@asu.edu
+ - [Ganesh Yalakala ](https://www.linkedin.com/in/ganeshyalakala/) | [GAneshs](https://github.com/Ganeshy93) | Ganeshy93@asu.edu
+
 
 ## 1. Introduction:
 ### 1.1. Our Proposal
