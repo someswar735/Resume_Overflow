@@ -22,7 +22,7 @@ All other known bugs, fixes, feedbacks, and feature requests can be reported on 
 
 #### Author & Contributor List
 
- - [Ganesh Yalakala ](https://www.linkedin.com/in/ganeshyalakala/) | [GAneshs](https://github.com/Ganeshy93) | Ganeshy93@asu.edu
+ - [Ganesh Yalakala ](https://www.linkedin.com/in/ganeshyalakala/) | [Ganesh](https://github.com/Ganeshy93) | Ganeshy93@asu.edu
 
 
 ## 1. Introduction:
