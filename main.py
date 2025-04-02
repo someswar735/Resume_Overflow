@@ -3,9 +3,9 @@ from zlm import AutoApplyModel
 
 def create_resume_cv(url, master_data, api_key, provider, model, downloads_dir):
     # Check for None values and set defaults
-    url = url or "https://www.linkedin.com/jobs/view/4170745393"
-    master_data = master_data or "/home/boson-264/Downloads/Ganesh.pdf"
-    api_key = "AIzaSyB2SSQ_Wy3b1wS3VdRxknwvxKW-ROaIKy4"
+    url = url or "https://www.linkedin.com/jobs/view/4183333268"
+    master_data = master_data or "/home/boson-264/Downloads/Someswar_Sivakavi_CV.pdf"
+    api_key = "AIzaSyAgpVuOF2Jv37r5eqGeIRN3F3jf10ET2Is"
     provider = provider or "Gemini"
     model = model or "gemini-2.0-flash"
     downloads_dir = downloads_dir or "/home/boson-264/Downloads/"

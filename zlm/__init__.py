@@ -224,7 +224,6 @@ class AutoApplyModel:
             st.write("Error: \n\n",e)
             return None, None
 
-
     @utils.measure_execution_time
     def resume_builder(self, job_details: dict, user_data: dict, is_st=False):
         """
@@ -246,31 +245,35 @@ class AutoApplyModel:
             print("\nGenerating Resume Details...")
             if is_st: st.toast("Generating Resume Details...")
 
-            
-
             # Personal Information Section
             if is_st: st.toast("Processing Resume's Personal Info Section...")
             resume_details["personal"] = { 
-                "name": user_data["name"], 
-                "phone": user_data["phone"], 
-                "email": user_data["email"],
-                "github": user_data["github"], 
-                "linkedin": user_data["linkedin"]
+                "name": user_data.get("name", ""),
+                "phone": user_data.get("phone", ""),
+                "email": user_data.get("email", ""),
+                "github": user_data.get("github", ""),
+                "linkedin": user_data.get("linkedin", "")
                 }
-            st.markdown("**Personal Info Section**")
-            st.write(resume_details)
+        
+            if is_st:
+                st.markdown("**Personal Info Section**")
+                st.write(resume_details)
 
             # Other Sections
             for section in ['work_experience', 'projects', 'skill_section', 'education', 'certifications', 'achievements']:
+                if section not in user_data:
+                    print(f"Warning: {section} not found in user data, skipping...")
+                    continue
+                
                 section_log = f"Processing Resume's {section.upper()} Section..."
                 if is_st: st.toast(section_log)
 
                 json_parser = JsonOutputParser(pydantic_object=section_mapping[section]["schema"])
-                
+            
                 prompt = PromptTemplate(
                     template=section_mapping[section]["prompt"],
                     partial_variables={"format_instructions": json_parser.get_format_instructions()}
-                    ).format(section_data = json.dumps(user_data[section]), job_description = json.dumps(job_details))
+                    ).format(section_data=json.dumps(user_data[section]), job_description=json.dumps(job_details))
 
                 response = self.llm.get_response(prompt=prompt, expecting_longer_output=True, need_json_output=True)
 
@@ -282,13 +285,19 @@ class AutoApplyModel:
                                 resume_details[section] = [i for i in response['skill_section'] if len(i['skills'])]
                             else:
                                 resume_details[section] = response[section]
-                
+            
                 if is_st:
                     st.markdown(f"**{section.upper()} Section**")
                     st.write(response)
 
-            resume_details['keywords'] = ', '.join(job_details['keywords'])
-            
+            # Safely add keywords
+            if 'keywords' in job_details and job_details['keywords']:
+                try:
+                    resume_details['keywords'] = ', '.join(job_details['keywords'])
+                except Exception as e:
+                    print(f"Failed to process keywords: {e}")
+                    resume_details['keywords'] = ""
+        
             resume_path = utils.job_doc_name(job_details, self.downloads_dir, "resume")
 
             utils.write_json(resume_path, resume_details)
@@ -300,8 +309,8 @@ class AutoApplyModel:
 
             return resume_path, resume_details
         except Exception as e:
-            print(e)
-            st.write("Error: \n\n",e)
+            print(f"Error in resume_builder: {e}")
+            if is_st: st.error(f"Error: {e}")
             return resume_path, resume_details
 
     def resume_cv_pipeline(self, job_url: str, user_data_path: str = demo_data_path):
